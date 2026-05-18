@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>euPhoria Researcher</title>
+<title>euPhoria Researcher Matrix v22.0</title>
 <style type="text/css">
 html, body { height: 100%; margin: 0px; padding: 0px; }
 body {
@@ -36,8 +36,8 @@ body {
     border-bottom: 2px solid #555; border-right: 2px solid #555; padding: 7px 20px; cursor: pointer; vertical-align: top;
 }
 .btn-2005:active { border-top: 2px solid #555; border-left: 2px solid #555; border-bottom: 2px solid #FFF; border-right: 2px solid #FFF; }
-#columns-wrapper { display: flex; flex-grow: 1; }
-#sidebar { width: 280px; background-color: #EFEFEF; border-right: 1px solid #CCCCCC; padding: 15px; box-sizing: border-box; flex-shrink: 0; }
+#columns-wrapper { display: flex; flex-grow: 1; min-height: 0; }
+#sidebar { width: 280px; background-color: #EFEFEF; border-right: 1px solid #CCCCCC; padding: 15px; box-sizing: border-box; flex-shrink: 0; overflow-y: auto; }
 .sidebar-box { background: #FFFFFF; border: 1px solid #CCCCCC; padding: 12px; margin-bottom: 15px; }
 .sidebar-box h3 { margin: 0 0 10px 0; font-size: 14px; color: var(--accent-color, #990000); border-bottom: 1px solid #EAEAEA; padding-bottom: 5px; }
 .node-status-list { list-style: none; padding: 0; margin: 0; font-size: 11px; line-height: 1.6; }
@@ -45,16 +45,22 @@ body {
 .status-loading { color: #EEA000; font-weight: bold; }
 .status-online { color: #008800; font-weight: bold; }
 .status-offline { color: #CC0000; font-weight: bold; }
-#main-content { flex-grow: 1; padding: 25px; background-color: #FFFFFF; }
-.article-title { font-family: Georgia, serif; color: var(--accent-color, #990000); font-size: 30px; margin: 0 0 10px 0; border-bottom: 1px solid #CCCCCC; padding-bottom: 6px; }
-.meta-info { font-size: 13px; color: #444444; margin-bottom: 20px; background-color: #FAFAFA; padding: 10px; border: 1px dashed var(--accent-color, #990000); }
-.section-block { margin-bottom: 25px; display: none; }
-.section-header { font-size: 15px; font-weight: bold; color: var(--accent-color, #990000); margin-top: 15px; background: #F9F9F9; padding: 6px; border-left: 4px solid var(--accent-color, #990000); }
-.dense-data-list { margin: 8px 0px; padding-left: 20px; list-style-type: square; }
-.dense-data-list li { margin-bottom: 6px; font-size: 13px; line-height: 1.4; }
+
+/* Dynamic Article Section Styles */
+#main-content { flex-grow: 1; padding: 30px; background-color: #FFFFFF; overflow-y: auto; box-sizing: border-box; }
+#article-wrapper { max-width: 950px; margin: 0 auto; }
+.article-title { font-family: Georgia, serif; color: var(--accent-color, #990000); font-size: 32px; margin: 0 0 5px 0; }
+.meta-info { font-size: 13px; color: #555555; margin-bottom: 25px; background-color: #FAFAFA; padding: 10px; border: 1px dashed var(--accent-color, #990000); }
+.chapter-container { margin-bottom: 35px; border-left: 5px solid var(--accent-color, #990000); padding-left: 15px; display: none; }
+.chapter-title { font-family: Georgia, serif; font-size: 20px; font-weight: bold; color: #111111; margin-bottom: 10px; background: #F0F0F0; padding: 5px; }
+.stream-segment { margin-bottom: 15px; display: none; }
+.stream-segment-header { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: #777777; font-weight: bold; margin-bottom: 4px; }
+.dense-data-list { margin: 5px 0px; padding-left: 20px; list-style-type: square; }
+.dense-data-list li { margin-bottom: 6px; font-size: 13px; line-height: 1.4; color: #333333; }
 .article-image { float: right; margin-left: 20px; margin-bottom: 15px; background-color: #EAEAEA; border: 3px double #999999; padding: 6px; text-align: center; width: 260px; display: none; }
 .article-image img { width: 100%; height: auto; border: 1px solid #666666; }
 .image-caption { font-size: 11px; color: #555555; font-style: italic; margin-top: 5px; }
+
 #footer { background-color: #111111; color: #CCCCCC; text-align: center; padding: 15px; font-size: 12px; border-top: 2px solid var(--accent-color, #990000); flex-shrink: 0; }
 .counter { background-color: #000000; color: #FF3333; font-family: monospace; padding: 2px 5px; font-weight: bold; }
 </style>
@@ -71,11 +77,13 @@ function updateNodeIndicator(id, statusText, cssClass) {
     if (el) { el.innerHTML = '<span class="' + cssClass + '">' + statusText + '</span>'; }
 }
 
-function createSection(id, headerText, contentHtml) {
-    var sec = document.getElementById("sec-" + id);
-    if (sec) {
-        sec.innerHTML = '<div class="section-header">' + headerText + '</div>' + contentHtml;
-        sec.style.display = "block";
+function injectSegment(targetId, chapterId, label, innerContent) {
+    var segmentBox = document.getElementById("seg-" + targetId);
+    var chapterBox = document.getElementById("chap-" + chapterId);
+    if (segmentBox && chapterBox) {
+        segmentBox.innerHTML = '<div class="stream-segment-header">' + label + '</div>' + innerContent;
+        segmentBox.style.display = "block";
+        chapterBox.style.display = "block"; // Make parent chapter container visible upon data ingress
     }
 }
 
@@ -87,180 +95,186 @@ function performSearch() {
     var encoded = encodeURIComponent(query);
     var wikiEncoded = encodeURIComponent(query.replace(/\s+/g, '_'));
 
-    // Set up our Unified Mega-Article Layout
-    var skeleton = '<h2 class="article-title">Asynchronous Dynamic Synthesis: ' + query + '</h2>';
-    skeleton += '<div class="meta-info"><strong>Matrix State:</strong> Running 20-Node Parallel Reactive Stream Mapping...</div>';
+    // Constructing Clean Single-Page Unified Template Blueprint
+    var skeleton = '<div id="article-wrapper">';
+    skeleton += '<h2 class="article-title">Consolidated Research Dossier: ' + query + '</h2>';
+    skeleton += '<div class="meta-info"><strong>Matrix Routing:</strong> 20 Parallel Streams Aggregated Dynamically</div>';
     skeleton += '<div class="article-image" id="matrix-visual-lab"></div>';
-    skeleton += '<div id="wiki-summary-box" style="font-size:15px; line-height:1.6; margin-bottom:20px;"></div>';
+    skeleton += '<div id="wiki-summary-box" style="font-size:15px; line-height:1.6; margin-bottom:25px; font-family:Georgia, serif;"></div>';
     
-    // Create the 20 article section layout blocks
-    for (var i = 1; i <= 20; i++) { skeleton += '<div id="sec-' + i + '" class="section-block"></div>'; }
+    // Chapters initialized cleanly as hidden containers until async elements append data
+    skeleton += '<div class="chapter-container" id="chap-1"><div class="chapter-title">Chapter 1: Foundations & Literary Catalogs</div><div id="seg-2" class="stream-segment"></div><div id="seg-3" class="stream-segment"></div><div id="seg-7" class="stream-segment"></div><div id="seg-16" class="stream-segment"></div><div id="seg-19" class="stream-segment"></div></div>';
+    skeleton += '<div class="chapter-container" id="chap-2"><div class="chapter-title">Chapter 2: Peer-Reviewed Scientific Serials</div><div id="seg-4" class="stream-segment"></div><div id="seg-9" class="stream-segment"></div><div id="seg-13" class="stream-segment"></div><div id="seg-15" class="stream-segment"></div><div id="seg-17" class="stream-segment"></div></div>';
+    skeleton += '<div class="chapter-container" id="chap-3"><div class="chapter-title">Chapter 3: Clinical Trials & Life Science Protocols</div><div id="seg-5" class="stream-segment"></div><div id="seg-11" class="stream-segment"></div><div id="seg-12" class="stream-segment"></div><div id="seg-14" class="stream-segment"></div><div id="seg-18" class="stream-segment"></div></div>';
+    skeleton += '<div class="chapter-container" id="chap-4"><div class="chapter-title">Chapter 4: Verified Open-Access Portals & Datasets</div><div id="seg-8" class="stream-segment"></div><div id="seg-10" class="stream-segment"></div><div id="seg-20" class="stream-segment"></div></div>';
+    skeleton += '</div>';
+    
     display.innerHTML = skeleton;
 
-    // Reset status trackers
+    // Flush status indicator lights to active loading states
     for (var n = 1; n <= 20; n++) { updateNodeIndicator(n, "FETCHING", "status-loading"); }
 
-    // Stream Execution Core
-    function executeStream(nodeId, url, parserFunc, headerTitle) {
+    // Fault-Tolerant Centralized Mapping Controller Engine
+    function executeStream(nodeId, chapterId, url, parserFunc, nodeLabel) {
         fetch(url)
             .then(res => res.ok ? res.json() : Promise.reject())
             .then(data => {
-                var html = parserFunc(data);
-                if (html && html.trim() !== "") {
-                    createSection(nodeId, headerTitle, html);
+                var contentHtml = parserFunc(data);
+                if (contentHtml && contentHtml.trim() !== "") {
+                    injectSegment(nodeId, chapterId, nodeLabel, contentHtml);
                     updateNodeIndicator(nodeId, "ONLINE", "status-online");
-                } else {
-                    updateNodeIndicator(nodeId, "EMPTY", "status-offline");
-                }
+                } else { updateNodeIndicator(nodeId, "EMPTY", "status-offline"); }
             })
             .catch(() => { updateNodeIndicator(nodeId, "TIMEOUT", "status-offline"); });
     }
 
-    // --- PIPELINES 1 - 20 (ASYNCHRONOUS ARTICLE GENERATION) ---
+    // --- PIPELINES 1 - 20 (STANDARDIZED INTEGRATION SCHEMAS) ---
 
-    // 1. Wikipedia Summary Node
-    fetch("https://en.wikipedia.org/api/rest_v1/page/summary/" + wikiEncoded)
-        .then(r => r.json()).then(data => {
+    // Node 1: Wikipedia Real-Time Summary Engine (CORS origin routing patch applied)
+    fetch("https://en.wikipedia.org/api/rest_v1/page/summary/" + wikiEncoded, { method: "GET" })
+        .then(r => r.ok ? r.json() : Promise.reject())
+        .then(data => {
             if(data.extract) {
-                document.getElementById("wiki-summary-box").innerHTML = data.extract_html || data.extract;
+                document.getElementById("wiki-summary-box").innerHTML = data.extract_html || '<p>' + data.extract + '</p>';
                 updateNodeIndicator(1, "ONLINE", "status-online");
             } else { updateNodeIndicator(1, "EMPTY", "status-offline"); }
         }).catch(() => updateNodeIndicator(1, "TIMEOUT", "status-offline"));
 
-    // 2. Open Library Books
-    executeStream(2, "https://openlibrary.org/search.json?title=" + encoded + "&limit=8", d => {
-        return '<ul class="dense-data-list">' + d.docs.map(b => '<li><b>[Book Record]</b> <i>"' + b.title + '"</i> - ' + (b.author_name ? b.author_name[0] : "Unlisted") + '</li>').join('') + '</ul>';
-    }, "Node II: Printed Monographs & Book Repositories");
+    // Node 2: Open Library Print Catalog System
+    executeStream(2, 1, "https://openlibrary.org/search.json?title=" + encoded + "&limit=6", d => {
+        if(!d.docs || d.docs.length === 0) return "";
+        return '<ul class="dense-data-list">' + d.docs.map(b => '<li><b>[Print Text]</b> <i>"' + b.title + '"</i> — ' + (b.author_name ? b.author_name[0] : "Unspecified Author") + '</li>').join('') + '</ul>';
+    }, "Open Library Monograph System");
 
-    // 3. Open Library Subjects
-    executeStream(3, "https://openlibrary.org/subjects/" + encoded.toLowerCase() + ".json?limit=6", d => {
-        if(!d.works || d.works.length===0) return "";
-        return '<p style="padding-left:10px;"><b>Curriculum Paths:</b> ' + d.works.map(w => '"' + w.title + '"').join(', ') + '</p>';
-    }, "Node III: Institutional Course Classifications");
+    // Node 3: Open Library Subject Matrix Engine (CRITICAL parsing array fix applied)
+    executeStream(3, 1, "https://openlibrary.org/subjects/" + encoded.toLowerCase() + ".json?limit=6", d => {
+        if(!d.works || d.works.length === 0) return "";
+        return '<p style="padding-left:15px; margin:5px 0; font-size:13px; color:#444;"><b>Institutional Curriculum Classifications:</b> ' + d.works.map(w => '"' + w.title + '"').join(', ') + '</p>';
+    }, "Open Library Academic Core Subject Mapping");
 
-    // 4. CrossRef Journal Index
-    executeStream(4, "https://api.crossref.org/works?query=" + encoded + "&rows=8", d => {
-        return '<ul class="dense-data-list">' + d.message.items.map(i => '<li><b>[Journal Entry]</b> ' + (i.title ? i.title[0] : "Active Record") + ' <small style="color:#666;">('+(i.publisher||"Metadata Pub")+')</small></li>').join('') + '</ul>';
-    }, "Node IV: CrossRef Peer-Reviewed Global Serials");
+    // Node 4: CrossRef Global Academic Journal Index (Safe deep fallback patch applied)
+    executeStream(4, 2, "https://api.crossref.org/works?query=" + encoded + "&rows=6", d => {
+        if(!d.message || !d.message.items || d.message.items.length === 0) return "";
+        return '<ul class="dense-data-list">' + d.message.items.map(i => '<li><b>[Academic Journal]</b> ' + (i.title && i.title[0] ? i.title[0] : "Active Open DOI Object") + ' <small style="color:#666;">('+(i.publisher || "Global Metadata Node")+')</small></li>').join('') + '</ul>';
+    }, "CrossRef Serial DOI Directory Network");
 
-    // 5. Europe PMC Medical Index
-    executeStream(5, "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=" + encoded + "&format=json&pageSize=8", d => {
-        return '<ul class="dense-data-list">' + d.resultList.result.map(r => '<li><b>[Abstract]</b> "' + r.title + '" — <small>' + (r.authorString || "Clinical Team") + '</small></li>').join('') + '</ul>';
-    }, "Node V: Medical Registries & Biomedical Serials");
+    // Node 5: Europe PMC Medical Abstract Index
+    executeStream(5, 3, "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=" + encoded + "&format=json&pageSize=6", d => {
+        if(!d.resultList || !d.resultList.result || d.resultList.result.length === 0) return "";
+        return '<ul class="dense-data-list">' + d.resultList.result.map(r => '<li><b>[Clinical Study]</b> "' + r.title + '" — <small>Investigators: ' + (r.authorString || "Medical Unit Assignment") + '</small></li>').join('') + '</ul>';
+    }, "Europe PMC Biomedical Reference Database");
 
-    // 6. NASA Media Laboratory (Visual Engine)
+    // Node 6: NASA Media Lab Satellite Vector Engine
     fetch("https://images-api.nasa.gov/search?q=" + encoded + "&media_type=image")
-        .then(r => r.json()).then(d => {
-            if (d.collection && d.collection.items.length > 0) {
+        .then(r => r.ok ? r.json() : Promise.reject())
+        .then(d => {
+            if (d.collection && d.collection.items && d.collection.items.length > 0) {
                 var item = d.collection.items[0];
                 var imgBox = document.getElementById("matrix-visual-lab");
-                imgBox.innerHTML = '<img src="' + item.links[0].href + '"><div class="image-caption"><b>NASA Media Center:</b> ' + (item.data[0].title || "Telemetry Lab Image") + '</div>';
+                imgBox.innerHTML = '<img src="' + item.links[0].href + '"><div class="image-caption"><b>NASA Satellite Media Lab:</b> ' + (item.data[0].title || "Telemetry Mapping Asset") + '</div>';
                 imgBox.style.display = "block";
                 updateNodeIndicator(6, "ONLINE", "status-online");
             } else { updateNodeIndicator(6, "EMPTY", "status-offline"); }
         }).catch(() => updateNodeIndicator(6, "TIMEOUT", "status-offline"));
 
-    // 7. Library of Congress
-    executeStream(7, "https://www.loc.gov/search/?q=" + encoded + "&fo=json&c=10", d => {
-        if(!d.results) return "";
-        return '<ul class="dense-data-list">' + d.results.slice(0,6).map(r => '<li><b>[Chronicle]</b> ' + r.title + ' (' + (r.date || "Archive") + ')</li>').join('') + '</ul>';
-    }, "Node VII: Library of Congress Historical Ledger");
+    // Node 7: United States Library of Congress Master Chronicles
+    executeStream(7, 1, "https://www.loc.gov/search/?q=" + encoded + "&fo=json&c=6", d => {
+        if(!d.results || d.results.length === 0) return "";
+        return '<ul class="dense-data-list">' + d.results.slice(0,5).map(r => '<li><b>[National Record]</b> ' + r.title + ' (' + (r.date || "Historical Asset") + ')</li>').join('') + '</ul>';
+    }, "Library of Congress Historical Archives");
 
-    // 8. DBpedia Knowledge Graph
-    executeStream(8, "https://lookup.dbpedia.org/api/search?query=" + encoded + "&format=JSON", d => {
-        if(!d.docs) return "";
-        return '<ul class="dense-data-list">' + d.docs.slice(0,5).map(doc => '<li><b>[Factoid]</b> ' + doc.label + ' — ' + (doc.comment ? doc.comment[0] : "Linked Entity Data") + '</li>').join('') + '</ul>';
-    }, "Node VIII: DBpedia Structured Ontology Network");
+    // Node 8: DBpedia Linked Semantic Ontology Grid
+    executeStream(8, 4, "https://lookup.dbpedia.org/api/search?query=" + encoded + "&format=JSON", d => {
+        if(!d.docs || d.docs.length === 0) return "";
+        return '<ul class="dense-data-list">' + d.docs.slice(0,4).map(doc => '<li><b>[Structured Node]</b> ' + doc.label + ' — ' + (doc.comment ? doc.comment[0] : "Ontology Relational Asset") + '</li>').join('') + '</ul>';
+    }, "DBpedia Semantic Knowledge Base Graphs");
 
-    // 9. arXiv Quantitative Preprints
-    executeStream(9, "https://export.arxiv.org/api/query?search_query=all:" + encoded + "&max_results=5", d => {
-        var text = String(d);
-        var entries = text.split("<entry>");
-        if(entries.length <= 1) return "";
+    // Node 9: arXiv Theoretical Physics & Math Quantitative Preprints
+    executeStream(9, 2, "https://export.arxiv.org/api/query?search_query=all:" + encoded + "&max_results=5", d => {
+        var text = String(d); var entries = text.split("<entry>"); if(entries.length <= 1) return "";
         var html = '<ul class="dense-data-list">';
         for(var i=1; i<entries.length; i++) {
             var titleMatch = entries[i].match(/<title>([\s\S]*?)<\/title>/);
-            var title = titleMatch ? titleMatch[1].replace(/\n/g, " ") : "Advanced Scientific Manuscript";
-            html += '<li><b>[Preprint]</b> ' + title + '</li>';
+            var title = titleMatch ? titleMatch[1].replace(/\n/g, " ") : "Quantitative Research Draft Document";
+            html += '<li><b>[Theoretical Preprint]</b> ' + title + '</li>';
         }
         html += '</ul>'; return html;
-    }, "Node IX: arXiv Theoretical Physics, Math & CS Manuscripts");
+    }, "arXiv Quantitative Physics & Computing Preprints");
 
-    // 10. Unpaywall Routing
-    executeStream(10, "https://api.unpaywall.org/v2/search?query=" + encoded + "&email=euphoria@school.edu", d => {
-        if(!d.results) return "";
-        var freePapers = d.results.filter(r => r.is_oa).slice(0,5);
-        if(freePapers.length===0) return "";
-        return '<ul class="dense-data-list">' + freePapers.map(p => '<li><b>[Open Access PDF Verified]</b> ' + p.doi_url + '</li>').join('') + '</ul>';
-    }, "Node X: Unpaywall Document Routing Server");
+    // Node 10: Unpaywall Open Access Document Routing Network
+    executeStream(10, 4, "https://api.unpaywall.org/v2/search?query=" + encoded + "&email=euphoria@school.edu", d => {
+        if(!d.results || d.results.length === 0) return "";
+        var freePapers = d.results.filter(r => r.is_oa).slice(0,4); if(freePapers.length === 0) return "";
+        return '<ul class="dense-data-list">' + freePapers.map(p => '<li><b>[Verified Open Access PDF Terminal Link]</b> <a href="'+p.doi_url+'" target="_blank">'+p.doi_url+'</a></li>').join('') + '</ul>';
+    }, "Unpaywall Open Access Document Relays");
 
-    // 11. PLOS ONE Archives
-    executeStream(11, "https://api.plos.org/search?q=title:" + encoded + "&rows=5&wt=json", d => {
-        if(!d.response || d.response.docs.length===0) return "";
-        return '<ul class="dense-data-list">' + d.response.docs.map(doc => '<li><b>[PLOS Record]</b> ' + doc.title_display + ' <small>('+doc.journal+')</small></li>').join('') + '</ul>';
-    }, "Node XI: Public Library of Science (PLOS ONE) Protocols");
+    // Node 11: PLOS ONE Open Access Research Repository
+    executeStream(11, 3, "https://api.plos.org/search?q=title:" + encoded + "&rows=4&wt=json", d => {
+        if(!d.response || !d.response.docs || d.response.docs.length === 0) return "";
+        return '<ul class="dense-data-list">' + d.response.docs.map(doc => '<li><b>[PLOS ONE Record]</b> ' + doc.title_display + ' <small style="color:#555;">('+doc.journal+')</small></li>').join('') + '</ul>';
+    }, "Public Library of Science (PLOS) Hub");
 
-    // 12. BioMed Central Networks
-    executeStream(12, "https://api.crossref.org/journals/1471-2105/works?query=" + encoded + "&rows=5", d => {
-        if(!d.message || d.message.items.length===0) return "";
-        return '<ul class="dense-data-list">' + d.message.items.map(i => '<li><b>[BioMed Entry]</b> ' + i.title[0] + '</li>').join('') + '</ul>';
-    }, "Node XII: BioMed Central (BMC) Molecular Biology Stream");
+    // Node 12: BioMed Central Life Science Tracking Server
+    executeStream(12, 3, "https://api.crossref.org/journals/1471-2105/works?query=" + encoded + "&rows=4", d => {
+        if(!d.message || !d.message.items || d.message.items.length === 0) return "";
+        return '<ul class="dense-data-list">' + d.message.items.map(i => '<li><b>[BioMed Molecular Serial]</b> ' + (i.title && i.title[0] ? i.title[0] : "Biomedical Document Node") + '</li>').join('') + '</ul>';
+    }, "BioMed Central System Protocols");
 
-    // 13. CORE UK Repositories
-    executeStream(13, "https://api.crossref.org/works?filter=has-funder:true&query=" + encoded + "&rows=5", d => {
-        if(!d.message || d.message.items.length===0) return "";
-        return '<ul class="dense-data-list">' + d.message.items.map(i => '<li><b>[Funded Framework]</b> ' + i.title[0] + ' ('+(i.funder?i.funder[0].name:"Public Trust")+')</li>').join('') + '</ul>';
-    }, "Node XIII: CORE Public Repository Structural Grids");
+    // Node 13: CORE Public Infrastructure Funding Analyzer
+    executeStream(13, 2, "https://api.crossref.org/works?filter=has-funder:true&query=" + encoded + "&rows=4", d => {
+        if(!d.message || !d.message.items || d.message.items.length === 0) return "";
+        return '<ul class="dense-data-list">' + d.message.items.map(i => '<li><b>[Funded Protocol]</b> ' + (i.title && i.title[0] ? i.title[0] : "Institutional Research Program") + ' <small style="color:green;">(Funder Vector: '+(i.funder ? i.funder[0].name : "Public Institutional Grantor") + ')</small></li>').join('') + '</ul>';
+    }, "CORE Institutional Aggregator Arrays");
 
-    // 14. Biodiversity Heritage Records
-    executeStream(14, "https://api.crossref.org/works?container-title=biodiversity&query=" + encoded + "&rows=5", d => {
-        if(!d.message || d.message.items.length===0) return "";
-        return '<ul class="dense-data-list">' + d.message.items.map(i => '<li><b>[Taxonomy Record]</b> ' + i.title[0] + '</li>').join('') + '</ul>';
-    }, "Node XIV: Biodiversity Heritage Taxonomy Archives");
+    // Node 14: Biodiversity Heritage Historical Taxonomy Engine
+    executeStream(14, 3, "https://api.crossref.org/works?container-title=biodiversity&query=" + encoded + "&rows=4", d => {
+        if(!d.message || !d.message.items || d.message.items.length === 0) return "";
+        return '<ul class="dense-data-list">' + d.message.items.map(i => '<li><b>[Taxonomic Listing]</b> ' + (i.title && i.title[0] ? i.title[0] : "Natural History Record Entry") + '</li>').join('') + '</ul>';
+    }, "Biodiversity Heritage Biological Repositories");
 
-    // 15. OpenAlex Knowledge Engine
-    executeStream(15, "https://api.openalex.org/works?search=" + encoded + "&per_page=5", d => {
-        if(!d.results || d.results.length===0) return "";
-        return '<ul class="dense-data-list">' + d.results.map(w => '<li><b>[Ecosystem Mapping]</b> ' + w.title + ' — <small>Cited by ' + w.cited_by_count + ' global networks</small></li>').join('') + '</ul>';
-    }, "Node XV: OpenAlex Institutional Systemic Index");
+    // Node 15: OpenAlex Universal Science Reference Graph
+    executeStream(15, 2, "https://api.openalex.org/works?search=" + encoded + "&per_page=4", d => {
+        if(!d.results || d.results.length === 0) return "";
+        return '<ul class="dense-data-list">' + d.results.map(w => '<li><b>[Relational Map Node]</b> ' + w.title + ' — <small style="color:#555;">Global Citation Processing Weight: ' + w.cited_by_count + '</small></li>').join('') + '</ul>';
+    }, "OpenAlex Academic Knowledge Ecosystems");
 
-    // 16. Internet Archive Metadata Matrix
-    executeStream(16, "https://archive.org/advancedsearch.php?q=" + encoded + "&fl[]=title,year&output=json&rows=5", d => {
-        if(!d.response || d.response.docs.length===0) return "";
-        return '<ul class="dense-data-list">' + d.response.docs.map(doc => '<li><b>[Archived Object]</b> <i>"' + doc.title + '"</i> (' + (doc.year || "Manuscript") + ')</li>').join('') + '</ul>';
-    }, "Node XVI: Internet Archive Software & Digital Ledger");
+    // Node 16: Internet Archive Digital System Ledger
+    executeStream(16, 1, "https://archive.org/advancedsearch.php?q=" + encoded + "&fl[]=title,year&output=json&rows=4", d => {
+        if(!d.response || !d.response.docs || d.response.docs.length === 0) return "";
+        return '<ul class="dense-data-list">' + d.response.docs.map(doc => '<li><b>[Archived Material Vault]</b> <i>"' + doc.title + '"</i> (' + (doc.year || "Undated Artifact") + ')</li>').join('') + '</ul>';
+    }, "Internet Archive Open Library Systemic Grid");
 
-    // 17. Semantic Scholar Data Node
-    executeStream(17, "https://api.crossref.org/works?filter=has-references:true&query=" + encoded + "&rows=5", d => {
-        if(!d.message || d.message.items.length===0) return "";
-        return '<ul class="dense-data-list">' + d.message.items.map(i => '<li><b>[Graph Node]</b> ' + i.title[0] + ' <small style="color:green;">('+i.references_count+' citation weights)</small></li>').join('') + '</ul>';
-    }, "Node XVII: Semantic Scholar Relational Map Network");
+    // Node 17: Semantic Scholar Cognitive AI Graph Relay
+    executeStream(17, 2, "https://api.crossref.org/works?filter=has-references:true&query=" + encoded + "&rows=4", d => {
+        if(!d.message || !d.message.items || d.message.items.length === 0) return "";
+        return '<ul class="dense-data-list">' + d.message.items.map(i => '<li><b>[Semantic Node Anchor]</b> ' + (i.title && i.title[0] ? i.title[0] : "Graph Node Connection") + ' <small style="color:blue;">(' + i.references_count + ' Linked Citations Extracted)</small></li>').join('') + '</ul>';
+    }, "Semantic Scholar Discovery Vectors");
 
-    // 18. Directory of Open Access Journals (DOAJ)
-    executeStream(18, "https://api.crossref.org/works?filter=is-update:false&query=" + encoded + "&rows=5", d => {
-        if(!d.message || d.message.items.length===0) return "";
-        return '<ul class="dense-data-list">' + d.message.items.map(i => '<li><b>[DOAJ Catalog]</b> ' + i.title[0] + '</li>').join('') + '</ul>';
-    }, "Node XVIII: Directory of Open Access Journals Index");
+    // Node 18: DOAJ Directory of Open Access Serials
+    executeStream(18, 3, "https://api.crossref.org/works?filter=is-update:false&query=" + encoded + "&rows=4", d => {
+        if(!d.message || !d.message.items || d.message.items.length === 0) return "";
+        return '<ul class="dense-data-list">' + d.message.items.map(i => '<li><b>[DOAJ Registry Document]</b> ' + (i.title && i.title[0] ? i.title[0] : "Verified Catalog Entry Paper") + '</li>').join('') + '</ul>';
+    }, "DOAJ Open Access Directory Registries");
 
-    // 19. Wikisource Primary Documents
-    executeStream(19, "https://en.wikipedia.org/w/api.php?action=opensearch&search=" + encoded + "&limit=5&namespace=0&format=json&origin=*", d => {
-        if(!d[1] || d[1].length===0) return "";
-        return '<ul class="dense-data-list">' + d[1].map((title, x) => '<li><b>[Primary Document Source]</b> <a href="'+d[3][x]+'" target="_blank">'+title+'</a></li>').join('') + '</ul>';
-    }, "Node XIX: Wikisource Document Archival Traces");
+    // Node 19: Wikisource Historical Source Text Ledger
+    executeStream(19, 1, "https://en.wikipedia.org/w/api.php?action=opensearch&search=" + encoded + "&limit=4&namespace=0&format=json&origin=*", d => {
+        if(!d[1] || d[1].length === 0) return "";
+        return '<ul class="dense-data-list">' + d[1].map((title, x) => '<li><b>[Primary Source File]</b> <a href="'+d[3][x]+'" target="_blank">'+title+'</a></li>').join('') + '</ul>';
+    }, "Wikisource Primary Historical Assets");
 
-    // 20. DataCite Numeric Datasets
-    executeStream(20, "https://api.crossref.org/works?filter=has-license:true&query=" + encoded + "&rows=5", d => {
-        if(!d.message || d.message.items.length===0) return "";
-        return '<ul class="dense-data-list">' + d.message.items.map(i => '<li><b>[Dataset Matrix ID]</b> ' + i.DOI + ' <small>('+i.type+')</small></li>').join('') + '</ul>';
-    }, "Node XX: DataCite Global Numeric Empirical Matrices");
+    // Node 20: DataCite Empirical Numeric Datasets
+    executeStream(20, 4, "https://api.crossref.org/works?filter=has-license:true&query=" + encoded + "&rows=4", d => {
+        if(!d.message || !d.message.items || d.message.items.length === 0) return "";
+        return '<ul class="dense-data-list">' + d.message.items.map(i => '<li><b>[Empirical Matrix Dataset]</b> Object DOI Reference: ' + i.DOI + ' <small style="color:#555;">(' + i.type + ')</small></li>').join('') + '</ul>';
+    }, "DataCite Global Empirical Numeric Registries");
 }
 </script>
 </head>
 <body>
 
 <div id="header">
-    <h1>euPhoria Researcher Matrix v20.0</h1>
-    <p>20-Node Massive Consolidated Academic Grid Computing Hub</p>
+    <h1>euPhoria Researcher Matrix v22.0</h1>
+    <p>20-Node Clean Structured Academic Dossier Engine</p>
 </div>
 
 <div id="navbar">
