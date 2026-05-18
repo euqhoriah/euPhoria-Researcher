@@ -124,19 +124,19 @@
             border-right: 2px solid #FFF;
         }
 
-        /* Nonstop Activity Pulse Badge */
+        /* Nonstop Activity Pulse Badge - Updated Layout */
         #nonstop-badge {
             margin-top: 8px;
             display: inline-block;
-            background: #000000;
-            color: #00FF00;
+            background: transparent; /* Removed black background */
+            color: #000000;          /* Text is now black */
             font-family: "Courier New", Courier, monospace;
             font-weight: bold;
             font-size: 11px;
             padding: 4px 10px;
             border: 1px solid #333333;
             letter-spacing: 1px;
-            text-shadow: 0 0 4px rgba(0,255,0,0.6);
+            text-shadow: none;       /* Removed green glowing artifact effects */
         }
 
         /* History Breadcrumb Trail */
@@ -498,6 +498,12 @@
                 res.innerHTML = "Lexical node connection error.";
             });
         }
+    </script>
+</head>
+<body>
+    <!-- Rest of your body elements can follow here -->
+</body>
+</html>
 
         function activateHomeView() {
             var resultsDiv = document.getElementById("article-display");
