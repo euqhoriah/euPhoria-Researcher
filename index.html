@@ -3,84 +3,84 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>euPhoria Researcher Matrix</title>
+<title>euPhoria Researcher Matrix v28.0 - Home Nav Edition</title>
 <style type="text/css">
 html, body { height: 100%; margin: 0px; padding: 0px; }
 body {
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    background-color: #F8F9FA; color: #333333; font-size: 14px; 
+    background-color: #F8F9FA; color: #333333; font-size: 16px; 
     overflow-x: hidden; width: 100%; display: flex; flex-direction: column;
 }
 #header {
     background: linear-gradient(to bottom, #F4F7F9 0%, #EAF0F4 100%);
-    border-bottom: 3px solid var(--accent-color, #7FB3D5); padding: 15px 30px; color: #3A4F5F; flex-shrink: 0;
+    border-bottom: 3px solid #7FB3D5; padding: 25px 40px; color: #3A4F5F; flex-shrink: 0;
 }
 #header h1 {
-    margin: 0px; font-family: Georgia, serif; font-size: 34px; font-style: italic;
-    text-shadow: 1px 1px 2px var(--accent-shadow, rgba(127, 179, 213, 0.4));
+    margin: 0px; font-family: Georgia, serif; font-size: 40px; font-style: italic;
+    text-shadow: 1px 1px 2px rgba(127, 179, 213, 0.4);
 }
-#header p { margin: 5px 0px 0px 0px; font-size: 12px; letter-spacing: 1px; color: #6A7F8F; }
+#header p { margin: 8px 0px 0px 0px; font-size: 14px; letter-spacing: 1px; color: #6A7F8F; }
 #navbar {
-    background-color: #EAF0F4; border-bottom: 1px solid #D1DCE5; padding: 10px 30px;
-    font-size: 13px; font-weight: bold; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
+    background-color: #EAF0F4; border-bottom: 1px solid #D1DCE5; padding: 15px 40px;
+    font-size: 15px; font-weight: bold; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
 }
-.nav-links a { color: #4A5F70; text-decoration: none; margin-right: 25px; }
-.nav-links a:hover { color: var(--accent-color, #7FB3D5); text-decoration: underline; }
-#settings-control { display: inline-flex; align-items: center; background: #F4F7F9; border: 1px solid #B0C4DE; padding: 3px 8px; font-size: 12px; cursor: pointer; color: #333; }
-#colorPicker { margin-left: 8px; width: 40px; height: 22px; border: 1px solid #999; cursor: pointer; }
+.nav-links a { color: #4A5F70; text-decoration: none; display: inline-flex; align-items: center; cursor: pointer; }
+.nav-links a:hover { color: #7FB3D5; text-decoration: underline; }
 #container { width: 100%; flex-grow: 1; background-color: #FFFFFF; display: flex; flex-direction: column; }
-#search-zone { background-color: #F9FBFC; border-bottom: 2px dashed #D1DCE5; padding: 25px; text-align: center; flex-shrink: 0; }
-.search-box { font-size: 18px; padding: 8px; width: 60%; max-width: 900px; border: 1px solid #B5C9D9; background-color: #FFFFFF; }
+#search-zone { background-color: #F9FBFC; border-bottom: 2px dashed #D1DCE5; padding: 40px; text-align: center; flex-shrink: 0; }
+.search-box { font-size: 20px; padding: 12px; width: 65%; max-width: 900px; border: 1px solid #B5C9D9; background-color: #FFFFFF; }
 .btn-2005 {
-    font-size: 16px; font-weight: bold; background: #F0F4F8; border-top: 2px solid #FFF; border-left: 2px solid #FFF;
-    border-bottom: 2px solid #A0B2C6; border-right: 2px solid #A0B2C6; padding: 7px 20px; cursor: pointer; vertical-align: top; color: #3A4F5F;
+    font-size: 18px; font-weight: bold; background: #F0F4F8; border-top: 2px solid #FFF; border-left: 2px solid #FFF;
+    border-bottom: 2px solid #A0B2C6; border-right: 2px solid #A0B2C6; padding: 11px 25px; cursor: pointer; vertical-align: top; color: #3A4F5F; margin-left: 10px;
 }
 .btn-2005:active { border-top: 2px solid #A0B2C6; border-left: 2px solid #A0B2C6; border-bottom: 2px solid #FFF; border-right: 2px solid #FFF; }
-#columns-wrapper { display: flex; flex-grow: 1; min-height: 0; }
-#sidebar { width: 280px; background-color: #F0F4F7; border-right: 1px solid #D1DCE5; padding: 15px; box-sizing: border-box; flex-shrink: 0; overflow-y: auto; }
-.sidebar-box { background: #FFFFFF; border: 1px solid #D1DCE5; padding: 12px; margin-bottom: 15px; border-radius: 2px; }
-.sidebar-box h3 { margin: 0 0 10px 0; font-size: 14px; color: var(--accent-color, #7FB3D5); border-bottom: 1px solid #EAF0F4; padding-bottom: 5px; }
-.node-status-list { list-style: none; padding: 0; margin: 0; font-size: 11px; line-height: 1.6; }
-.node-status-list li { display: flex; justify-content: space-between; border-bottom: 1px dashed #E0E7ED; padding: 2px 0; color: #555; height: 18px; align-items: center; }
+#columns-wrapper { display: flex; flex-grow: 1; min-height: 0; gap: 20px; padding: 20px 0; }
+#sidebar { width: 340px; background-color: #F0F4F7; border-right: 1px solid #D1DCE5; padding: 25px; box-sizing: border-box; flex-shrink: 0; overflow-y: auto; }
+.sidebar-box { background: #FFFFFF; border: 1px solid #D1DCE5; padding: 20px; margin-bottom: 25px; border-radius: 4px; }
+.sidebar-box h3 { margin: 0 0 15px 0; font-size: 16px; color: #7FB3D5; border-bottom: 1px solid #EAF0F4; padding-bottom: 8px; }
+.node-status-list { list-style: none; padding: 0; margin: 0; font-size: 13px; line-height: 2.0; }
+.node-status-list li { display: flex; justify-content: space-between; border-bottom: 1px dashed #E0E7ED; padding: 4px 0; color: #555; height: 24px; align-items: center; }
 .status-loading { color: #EEA000; font-weight: bold; }
 .status-online { color: #2E8B57; font-weight: bold; }
 .status-offline { color: #CD5C5C; font-weight: bold; }
 
+/* Interactive Widget Styling */
+.widget-input-group { display: flex; margin-bottom: 12px; gap: 5px; }
+.widget-input { font-size: 14px; padding: 6px; border: 1px solid #B5C9D9; flex-grow: 1; }
+.widget-btn { font-size: 13px; font-weight: bold; background: #F0F4F8; border: 1px solid #A0B2C6; padding: 5px 12px; cursor: pointer; color: #3A4F5F; }
+.widget-btn:hover { background: #7FB3D5; color: #FFF; border-color: #5D93B5; }
+#widget-results { font-size: 13px; line-height: 1.5; color: #333; max-height: 220px; overflow-y: auto; padding-top: 5px; }
+
 /* Dynamic Article & Default State Layout Styles */
-#main-content { flex-grow: 1; padding: 30px; background-color: #FFFFFF; overflow-y: auto; box-sizing: border-box; }
-#article-wrapper { max-width: 950px; margin: 0 auto; }
-.article-title { font-family: Georgia, serif; color: var(--accent-color, #7FB3D5); font-size: 32px; margin: 0 0 5px 0; }
-.meta-info { font-size: 13px; color: #5A6F80; margin-bottom: 25px; background-color: #F4F7F9; padding: 10px; border: 1px dashed var(--accent-color, #7FB3D5); }
-.chapter-container { margin-bottom: 35px; border-left: 5px solid var(--accent-color, #7FB3D5); padding-left: 15px; display: none; }
-.chapter-title { font-family: Georgia, serif; font-size: 20px; font-weight: bold; color: #2A3F50; margin-bottom: 10px; background: #F0F4F7; padding: 5px; }
-.stream-segment { margin-bottom: 15px; display: none; }
-.stream-segment-header { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: #7A8F9F; font-weight: bold; margin-bottom: 4px; }
-.dense-data-list { margin: 5px 0px; padding-left: 20px; list-style-type: square; }
-.dense-data-list li { margin-bottom: 6px; font-size: 13px; line-height: 1.4; color: #333333; }
-.article-image { float: right; margin-left: 20px; margin-bottom: 15px; background-color: #F4F7F9; border: 3px double #B5C9D9; padding: 6px; text-align: center; width: 260px; display: none; }
+#main-content { flex-grow: 1; padding: 40px; background-color: #FFFFFF; overflow-y: auto; box-sizing: border-box; }
+#article-wrapper { max-width: 1000px; margin: 0 auto; }
+.article-title { font-family: Georgia, serif; color: #7FB3D5; font-size: 36px; margin: 0 0 10px 0; }
+.meta-info { font-size: 15px; color: #5A6F80; margin-bottom: 35px; background-color: #F4F7F9; padding: 15px; border: 1px dashed #7FB3D5; line-height: 1.6; }
+.chapter-container { margin-bottom: 45px; border-left: 5px solid #7FB3D5; padding-left: 20px; display: none; }
+.chapter-title { font-family: Georgia, serif; font-size: 24px; font-weight: bold; color: #2A3F50; margin-bottom: 15px; background: #F0F4F7; padding: 8px; }
+.stream-segment { margin-bottom: 25px; display: none; }
+.stream-segment-header { font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: #7A8F9F; font-weight: bold; margin-bottom: 8px; }
+.dense-data-list { margin: 10px 0px; padding-left: 25px; list-style-type: square; }
+.dense-data-list li { margin-bottom: 10px; font-size: 15px; line-height: 1.6; color: #333333; }
+.article-image { float: right; margin-left: 25px; margin-bottom: 25px; background-color: #F4F7F9; border: 3px double #B5C9D9; padding: 10px; text-align: center; width: 300px; display: none; }
 .article-image img { width: 100%; height: auto; border: 1px solid #A0B2C6; }
-.image-caption { font-size: 11px; color: #5A6F80; font-style: italic; margin-top: 5px; }
+.image-caption { font-size: 12px; color: #5A6F80; font-style: italic; margin-top: 8px; }
 
 /* Dashboard Terminal Elements */
-.welcome-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 15px; }
-.terminal-card { border: 1px solid #D1DCE5; background: #F9FBFC; padding: 15px; }
-.terminal-card h4 { margin: 0 0 10px 0; font-family: Georgia, serif; font-size: 16px; color: var(--accent-color, #7FB3D5); border-bottom: 1px solid #EAF0F4; padding-bottom: 4px; }
-.terminal-log-flow { background-color: #F0F4F8; color: #2E5B82; font-family: monospace; font-size: 11px; padding: 12px; height: 160px; overflow-y: hidden; line-height: 1.5; border: 2px inset #D1DCE5; }
-.preset-grid-zone { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.quick-btn { background: #FFFFFF; border: 1px solid #B5C9D9; padding: 6px; font-size: 12px; font-weight: bold; cursor: pointer; text-align: left; color: #4A5F70; }
-.quick-btn:hover { background: var(--accent-color, #7FB3D5); color: white; border-color: #5D93B5; }
+.welcome-grid { display: grid; grid-template-columns: 1fr; gap: 30px; margin-top: 25px; }
+@media (min-width: 1100px) { .welcome-grid { grid-template-columns: 1fr 1fr; } }
+.terminal-card { border: 1px solid #D1DCE5; background: #F9FBFC; padding: 25px; }
+.terminal-card h4 { margin: 0 0 15px 0; font-family: Georgia, serif; font-size: 18px; color: #7FB3D5; border-bottom: 1px solid #EAF0F4; padding-bottom: 6px; }
+.terminal-log-flow { background-color: #F0F4F8; color: #2E5B82; font-family: monospace; font-size: 13px; padding: 15px; height: 180px; overflow-y: hidden; line-height: 1.6; border: 2px inset #D1DCE5; }
+.preset-grid-zone { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.quick-btn { background: #FFFFFF; border: 1px solid #B5C9D9; padding: 10px; font-size: 14px; font-weight: bold; cursor: pointer; text-align: left; color: #4A5F70; }
+.quick-btn:hover { background: #7FB3D5; color: white; border-color: #5D93B5; }
 
-#footer { background-color: #EAF0F4; color: #5A6F80; text-align: center; padding: 15px; font-size: 12px; border-top: 2px solid var(--accent-color, #7FB3D5); flex-shrink: 0; }
-.counter { background-color: #FFFFFF; color: #2E5B82; font-family: monospace; padding: 2px 5px; font-weight: bold; border: 1px solid #B5C9D9; }
+#footer { background-color: #EAF0F4; color: #5A6F80; text-align: center; padding: 25px; font-size: 14px; border-top: 2px solid #7FB3D5; flex-shrink: 0; line-height: 1.6; }
+.counter { background-color: #FFFFFF; color: #2E5B82; font-family: monospace; padding: 3px 7px; font-weight: bold; border: 1px solid #B5C9D9; font-size: 15px; }
 </style>
 
 <script type="text/javascript">
-function applySystemColorTheme(hexValue) {
-    document.documentElement.style.setProperty('--accent-color', hexValue);
-    var r = parseInt(hexValue.substr(1,2), 16), g = parseInt(hexValue.substr(3,2), 16), b = parseInt(hexValue.substr(5,2), 16);
-    document.documentElement.style.setProperty('--accent-shadow', 'rgba('+r+','+g+','+b+',0.4)');
-}
-
 function updateNodeIndicator(id, statusText, cssClass) {
     var el = document.getElementById("node-" + id);
     if (el) { 
@@ -102,9 +102,71 @@ function triggerQuickLaunch(topicName) {
     performSearch();
 }
 
+function lookUpWidgetWord() {
+    var word = document.getElementById("widgetQuery").value.trim();
+    var outBox = document.getElementById("widget-results");
+    if(!word) return;
+    
+    outBox.innerHTML = "<span style='color:#EEA000; font-weight:bold;'>Querying terminal lexicons...</span>";
+    
+    fetch("https://api.dictionaryapi.dev/api/v2/entries/en/" + encodeURIComponent(word))
+        .then(res => res.ok ? res.json() : Promise.reject())
+        .then(data => {
+            if(data && data[0]) {
+                var entry = data[0];
+                var html = "<strong>" + entry.word + "</strong> " + (entry.phonetic ? "<small>" + entry.phonetic + "</small>" : "") + "<br>";
+                
+                if(entry.meanings) {
+                    entry.meanings.slice(0, 2).forEach(m => {
+                        html += "<p style='margin:5px 0 2px 0;'><b>(" + m.partOfSpeech + ")</b> " + m.definitions[0].definition + "</p>";
+                        if(m.synonyms && m.synonyms.length > 0) {
+                            html += "<div style='color:#555; font-size:12px; margin-bottom:5px;'><i>Thesaurus variants:</i> " + m.synonyms.slice(0, 4).join(", ") + "</div>";
+                        }
+                    });
+                }
+                outBox.innerHTML = html;
+            } else {
+                outBox.innerHTML = "<span style='color:#CD5C5C;'>No standard definition matched.</span>";
+            }
+        })
+        .catch(() => {
+            outBox.innerHTML = "<span style='color:#CD5C5C;'>Lexicon structural index offline or word not found.</span>";
+        });
+}
+
+function loadDefaultDashboard() {
+    // Clear active searches
+    document.getElementById("searchQuery").value = "Quantum Physics";
+    document.getElementById("widgetQuery").value = "";
+    document.getElementById("widget-results").innerHTML = '<span style="color:#7A8F9F; font-style:italic;">Type a word above to pull live definition fields and structural synonyms.</span>';
+    
+    // Reset individual node clusters
+    for (var n = 1; n <= 20; n++) { updateNodeIndicator(n, "", ""); }
+
+    // Reconstruct Welcome Landing UI Markup
+    var display = document.getElementById("article-display");
+    var baseHtml = '<h2 class="article-title" style="margin-bottom: 20px;">System Deployment Cluster Online</h2>';
+    baseHtml += '<p style="font-size: 16px; color: #555; line-height: 1.7; margin: 0 0 30px 0;">Type an advanced query parameter into the search bar above, or click a quick-launch node profile below. The backend infrastructure will dynamically orchestrate 20 asynchronous networks simultaneously without locking local memory allocation.</p>';
+    baseHtml += '<div class="welcome-grid">';
+    baseHtml += '<div class="terminal-card"><h4>System Initialization Diagnostic Log</h4><div class="terminal-log-flow" id="log-stream"></div></div>';
+    baseHtml += '<div class="terminal-card"><h4>Academic Core Quick-Launch Profiles</h4><p style="font-size: 13px; color:#6A7F8F; margin: 0 0 15px 0;">Select a pre-configured vector template to instantly fire intercept data pipelines:</p>';
+    baseHtml += '<div class="preset-grid-zone">';
+    baseHtml += '<button class="quick-btn" onclick="triggerQuickLaunch(\'Quantum Physics\')">&gt; Quantum Physics</button> ';
+    baseHtml += '<button class="quick-btn" onclick="triggerQuickLaunch(\'Artificial Intelligence\')">&gt; Artificial Intelligence</button> ';
+    baseHtml += '<button class="quick-btn" onclick="triggerQuickLaunch(\'Molecular Biology\')">&gt; Molecular Biology</button> ';
+    baseHtml += '<button class="quick-btn" onclick="triggerQuickLaunch(\'Ancient Egypt\')">&gt; Ancient Egypt</button> ';
+    baseHtml += '<button class="quick-btn" onclick="triggerQuickLaunch(\'Climate Dynamics\')">&gt; Climate Dynamics</button> ';
+    baseHtml += '<button class="quick-btn" onclick="triggerQuickLaunch(\'Renaissance Art\')">&gt; Renaissance Art</button>';
+    baseHtml += '</div></div></div>';
+    
+    display.innerHTML = baseHtml;
+    runBootLogs();
+}
+
 function runBootLogs() {
     var logBox = document.getElementById("log-stream");
     if(!logBox) return;
+    logBox.innerHTML = "";
     var lines = [
         "Initializing global core protocols...",
         "Validating 20 academic mainframe endpoints... OK",
@@ -140,9 +202,8 @@ function performSearch() {
     skeleton += '<h2 class="article-title">Consolidated Research Dossier: ' + query + '</h2>';
     skeleton += '<div class="meta-info"><strong>Matrix Routing:</strong> 20 Parallel Streams Aggregated Dynamically</div>';
     skeleton += '<div class="article-image" id="matrix-visual-lab"></div>';
-    skeleton += '<div id="wiki-summary-box" style="font-size:15px; line-height:1.6; margin-bottom:25px; font-family:Georgia, serif;"></div>';
+    skeleton += '<div id="wiki-summary-box" style="font-size:17px; line-height:1.7; margin-bottom:35px; font-family:Georgia, serif;"></div>';
     
-    // Chapter 1 now contains placeholders for both dictionary definition sets and structural library arrays
     skeleton += '<div class="chapter-container" id="chap-1"><div class="chapter-title">Chapter 1: Foundations, Dictionary Definitions & Literary Catalogs</div><div id="seg-dict" class="stream-segment"></div><div id="seg-2" class="stream-segment"></div><div id="seg-3" class="stream-segment"></div><div id="seg-7" class="stream-segment"></div><div id="seg-16" class="stream-segment"></div><div id="seg-19" class="stream-segment"></div></div>';
     skeleton += '<div class="chapter-container" id="chap-2"><div class="chapter-title">Chapter 2: Peer-Reviewed Scientific Serials</div><div id="seg-4" class="stream-segment"></div><div id="seg-9" class="stream-segment"></div><div id="seg-13" class="stream-segment"></div><div id="seg-15" class="stream-segment"></div><div id="seg-17" class="stream-segment"></div></div>';
     skeleton += '<div class="chapter-container" id="chap-3"><div class="chapter-title">Chapter 3: Clinical Trials & Life Science Protocols</div><div id="seg-5" class="stream-segment"></div><div id="seg-11" class="stream-segment"></div><div id="seg-12" class="stream-segment"></div><div id="seg-14" class="stream-segment"></div><div id="seg-18" class="stream-segment"></div></div>';
@@ -151,7 +212,6 @@ function performSearch() {
     
     display.innerHTML = skeleton;
 
-    // Reset status trackers (Clear previous markings cleanly)
     for (var n = 1; n <= 20; n++) { updateNodeIndicator(n, "FETCHING", "status-loading"); }
 
     function executeStream(nodeId, url, parserFunc, nodeLabel) {
@@ -167,18 +227,18 @@ function performSearch() {
             .catch(() => { updateNodeIndicator(nodeId, "TIMEOUT", "status-offline"); });
     }
 
-    // Integrated Dictionary/Thesaurus Pipeline Connection Block
+    // Dynamic Chapter 1 Dictionary Auto-Intercept
     fetch("https://api.dictionaryapi.dev/api/v2/entries/en/" + encoded)
         .then(res => res.ok ? res.json() : Promise.reject())
         .then(data => {
             if (data && data[0]) {
-                var html = '<div style="background-color:#F4F7F9; padding:12px; border:1px solid #D1DCE5; margin-bottom:15px;">';
-                html += '<h4 style="margin:0 0 5px 0; font-family:Georgia,serif; color:#2E5B82;">Lexicographical Reference Entry: <i>' + data[0].word + '</i> [' + (data[0].phonetic || "") + ']</h4>';
+                var html = '<div style="background-color:#F4F7F9; padding:20px; border:1px solid #D1DCE5; margin-bottom:25px; line-height: 1.6;">';
+                html += '<h4 style="margin:0 0 10px 0; font-family:Georgia,serif; font-size:18px; color:#2E5B82;">Lexicographical Reference Entry: <i>' + data[0].word + '</i> [' + (data[0].phonetic || "") + ']</h4>';
                 if(data[0].meanings) {
                     data[0].meanings.slice(0,2).forEach(m => {
-                        html += '<p style="margin:4px 0; font-size:13px;"><b>(' + m.partOfSpeech + ')</b> ' + m.definitions[0].definition + '</p>';
+                        html += '<p style="margin:8px 0; font-size:15px;"><b>(' + m.partOfSpeech + ')</b> ' + m.definitions[0].definition + '</p>';
                         if(m.synonyms && m.synonyms.length > 0) {
-                            html += '<p style="margin:2px 0 6px 0; font-size:12px; color:#555;"><i>Conceptual Equivalents:</i> ' + m.synonyms.slice(0,5).join(', ') + '</p>';
+                            html += '<p style="margin:4px 0 10px 0; font-size:14px; color:#555;"><i>Conceptual Equivalents:</i> ' + m.synonyms.slice(0,5).join(', ') + '</p>';
                         }
                     });
                 }
@@ -211,7 +271,7 @@ function performSearch() {
     // Node 3: Open Library Subject Matrix
     executeStream(3, "https://openlibrary.org/subjects/" + encoded.toLowerCase() + ".json?limit=6", d => {
         if(!d.works || d.works.length === 0) return "";
-        return '<p style="padding-left:15px; margin:5px 0; font-size:13px; color:#444;"><b>Institutional Curriculum Classifications:</b> ' + d.works.map(w => '"' + w.title + '"').join(', ') + '</p>';
+        return '<p style="padding-left:15px; margin:8px 0; font-size:15px; color:#444;"><b>Institutional Curriculum Classifications:</b> ' + d.works.map(w => '"' + w.title + '"').join(', ') + '</p>';
     }, "Open Library Academic Core Subject Mapping");
 
     // Node 4: CrossRef Global Academic Journal Index
@@ -335,26 +395,21 @@ function performSearch() {
 <body>
 
 <div id="header">
-    <h1>euPhoria Researcher Matrix v25.0</h1>
+    <h1>euPhoria Researcher Matrix v28.0</h1>
     <p>20-Node Clean Structured Academic Dossier Engine // Cloud Dancer Edition</p>
 </div>
 
 <div id="navbar">
     <div class="nav-links">
-        <a href="#">Reactive Web Matrix</a> |
-        <a href="#">Asynchronous Processing Hub</a> |
-        <a href="#">Terminal Registry</a>
-    </div>
-    <div id="settings-control">
-        <strong>Matrix Base Hue:</strong>
-        <input type="color" id="colorPicker" value="#7FB3D5" oninput="applySystemColorTheme(this.value);">
+        <!-- New Home Button Mapping -->
+        <a onclick="loadDefaultDashboard();"><b>[ Home ]</b></a>
     </div>
 </div>
 
 <div id="container">
     <div id="search-zone">
         <form action="javascript:void(0);" onsubmit="performSearch();">
-            <strong><font color="var(--accent-color, #7FB3D5)">Unified Search Input Area:</font></strong>
+            <strong style="font-size: 16px; margin-right: 10px;"><font color="#7FB3D5">Unified Search Input Area:</font></strong>
             <input type="text" id="searchQuery" class="search-box" value="Quantum Physics">
             <input type="submit" value="Fire 20-Node Intercept Pipeline" class="btn-2005">
         </form>
@@ -362,6 +417,20 @@ function performSearch() {
 
     <div id="columns-wrapper">
         <div id="sidebar">
+            <!-- Dictionary & Thesaurus Module Widget -->
+            <div class="sidebar-box" style="border: 1px solid #7FB3D5;">
+                <h3 style="color: #2E5B82;">Dictionary & Thesaurus</h3>
+                <form action="javascript:void(0);" onsubmit="lookUpWidgetWord();">
+                    <div class="widget-input-group">
+                        <input type="text" id="widgetQuery" class="widget-input" placeholder="Enter word...">
+                        <input type="submit" value="Lookup" class="widget-btn">
+                    </div>
+                </form>
+                <div id="widget-results">
+                    <span style="color:#7A8F9F; font-style:italic;">Type a word above to pull live definition fields and structural synonyms.</span>
+                </div>
+            </div>
+
             <div class="sidebar-box">
                 <h3>20-Node Grid Cluster State</h3>
                 <ul class="node-status-list">
@@ -391,8 +460,8 @@ function performSearch() {
 
         <div id="main-content">
             <div id="article-display">
-                <h2 class="article-title" style="margin-bottom: 15px;">System Deployment Cluster Online</h2>
-                <p style="font-size: 14px; color: #555; line-height: 1.5; margin: 0 0 20px 0;">
+                <h2 class="article-title" style="margin-bottom: 20px;">System Deployment Cluster Online</h2>
+                <p style="font-size: 16px; color: #555; line-height: 1.7; margin: 0 0 30px 0;">
                     Type an advanced query parameter into the search bar above, or click a quick-launch node profile below. The backend infrastructure will dynamically orchestrate 20 asynchronous networks simultaneously without locking local memory allocation.
                 </p>
                 
@@ -404,7 +473,7 @@ function performSearch() {
                     
                     <div class="terminal-card">
                         <h4>Academic Core Quick-Launch Profiles</h4>
-                        <p style="font-size: 11px; color:#6A7F8F; margin: 0 0 10px 0;">Select a pre-configured vector template to instantly fire intercept data pipelines:</p>
+                        <p style="font-size: 13px; color:#6A7F8F; margin: 0 0 15px 0;">Select a pre-configured vector template to instantly fire intercept data pipelines:</p>
                         <div class="preset-grid-zone">
                             <button class="quick-btn" onclick="triggerQuickLaunch('Quantum Physics')">&gt; Quantum Physics</button>
                             <button class="quick-btn" onclick="triggerQuickLaunch('Artificial Intelligence')">&gt; Artificial Intelligence</button>
