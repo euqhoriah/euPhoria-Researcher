@@ -1,3 +1,6 @@
 # 🔍 euPhoria Researcher
 
-An interactive website that allows users to research topics easily.
+### features
+- An interactive website that allows users to research topics easily.
+- a fully fucntioncable dictionairy
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
